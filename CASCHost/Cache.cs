@@ -32,11 +32,22 @@ namespace CASCHost
 		private Queue<string> queries = new Queue<string>();
 		private bool firstrun = true;
 
+		private MySqlConnectionStringBuilder mysqlstring;
+		
+		private MySqlConnection mysqlcon;
 
 		public Cache(IHostingEnvironment environment)
 		{
 			env = environment;
 			Startup.Logger.LogInformation("Loading cache...");
+
+			mysqlstring = new MySqlConnectionStringBuilder();
+			mysqlstring.Server = Startup.Settings.MySQLHost;
+			mysqlstring.Port = Startup.Settings.MySQLPort;
+			mysqlstring.UserID = Startup.Settings.MySQLUid;
+			mysqlstring.Password = Startup.Settings.MySQLPassword;
+			mysqlstring.Database = Startup.Settings.MySQLDatabase;
+
 			Load();
 		}
 
@@ -119,30 +130,32 @@ namespace CASCHost
 		private void LoadOrCreate()
 		{
 			Version = new SingleConfig(Path.Combine(env.WebRootPath, "SystemFiles", ".build.info"), "Active", "1")["Version"];
-			using (MySqlConnection connection = new MySqlConnection(Startup.Settings.SqlConnection))
-			using (MySqlCommand command = new MySqlCommand())
-			{
-				try
+			using (MySqlConnection connection = new MySqlConnection(mysqlstring.ToString())){
+				using (MySqlCommand command = new MySqlCommand())
 				{
-					connection.Open();
-					command.Connection = connection;
+					try
+					{
+						connection.Open();
+						command.Connection = connection;
 
-					// create data table
-					command.CommandText = CREATE_DATA_TABLE;
-					command.ExecuteNonQuery();
+						// create data table
+						command.CommandText = CREATE_DATA_TABLE;
+						command.ExecuteNonQuery();
 
-					// load data
-					command.CommandText = LOAD_DATA;
-					ReadAll(command.ExecuteReader());
+						// load data
+						command.CommandText = LOAD_DATA;
+						ReadAll(command.ExecuteReader());
 
-					// purge old data
-					command.CommandText = PURGE_RECORDS;
-					command.ExecuteNonQuery();
-				}
-				catch(MySqlException ex)
-				{
-					Startup.Logger?.LogFile(ex.Message);
-					Startup.Logger?.LogAndThrow(CASCEdit.Logging.LogType.Critical, "Unable to connect to the database.");
+						// purge old data
+						command.CommandText = PURGE_RECORDS;
+						command.ExecuteNonQuery();
+					}
+					catch(MySqlException ex)
+					{
+						Startup.Logger?.LogFile(ex.Message);
+						Startup.Logger?.LogFile("MySqlException Number: " + ex.Number.ToString());
+						Startup.Logger?.LogAndThrow(CASCEdit.Logging.LogType.Critical, "Unable to connect to the database.");
+					}
 				}
 			}
 		}
@@ -214,16 +227,19 @@ namespace CASCHost
 
 				try
 				{
-					using (MySqlConnection connection = new MySqlConnection(Startup.Settings.SqlConnection))
-					using (MySqlCommand command = new MySqlCommand(sb.ToString(), connection))
-					{
-						connection.Open();
-						command.ExecuteNonQuery();
+					using (MySqlConnection connection = new MySqlConnection(mysqlstring.ToString())) {
+						using (MySqlCommand command = new MySqlCommand(sb.ToString(), connection))
+						{
+							connection.Open();
+							command.ExecuteNonQuery();
+						}
 					}
 				}
 				catch (MySqlException ex)
 				{
 					Startup.Logger.LogError("SQLERR: " + ex.Message);
+					Startup.Logger.LogFile("SQLERR: " + ex.Message);
+					Startup.Logger.LogFile("SQL ERR Number: " + ex.Number.ToString());
 				}
 			}
 		}

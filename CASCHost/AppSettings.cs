@@ -19,12 +19,24 @@ namespace CASCHost
 
 		public string HostDomain { get; set; } // accessible address of this server
 		public string[] CDNs { get; set; } // custom CDNs i.e. local client CASC archive clone
-		public string SqlConnection { get; set; } // database connection string
+		//public string SqlConnection { get; set; } // database connection string
 		public string PatchUrl { get; set; } // offical blizzard patch url i.e. http://us.patch.battle.net:1119
 		public string Locale { get; set; } // preferred locale for content
 
 		public string[] DirectoryHash { get; set; } // hashes of directories for offline change detection
-		
+
+		public string WebRootDir {get; set;} = "wwwroot"; //where the content goes
+
+		public string MySQLHost { get; set; } = "localhost";
+
+		public string MySQLUid { get; set; } = "caschost";
+
+		public string MySQLPassword { get; set; }
+
+		public string MySQLDatabase { get; set; } = "caschost";
+
+		public ushort MySQLPort { get; set; } = 3306;
+
 		public void Save(IHostingEnvironment env)
 		{
 			if (CDNs == null)

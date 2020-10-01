@@ -11,6 +11,8 @@ namespace CASCHost
 {
 	public class Program
 	{
+
+		
 		public static void Main(string[] args)
 		{
 
@@ -20,6 +22,8 @@ namespace CASCHost
 				.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile("hosting.json", optional: true)
 				.Build();
+
+		//	string webRootDir = config.Get("WebRootDir");
 
 			var host = new WebHostBuilder()
 				.ConfigureLogging(options => options.AddConsole())

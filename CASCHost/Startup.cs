@@ -8,9 +8,9 @@ using Microsoft.Extensions.Options;
 using System.IO;
 using System.Net.Http;
 using System.Net;
-using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.FileProviders;
+//using Microsoft.Extensions.FileProviders;
 
 namespace CASCHost
 {
