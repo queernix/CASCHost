@@ -248,11 +248,7 @@ namespace CASCHost
 
 		#region SQL Strings
 
-		private const string CREATE_DATA_TABLE = "SET GLOBAL innodb_file_format=Barracuda;                        " +
-												 "SET GLOBAL innodb_file_per_table=ON;                            " +
-												 "SET GLOBAL innodb_large_prefix=ON;                              " +
-												 "                                                                " +
-												 "CREATE TABLE IF NOT EXISTS `root_entries` (                     " +
+		private const string CREATE_DATA_TABLE = "CREATE TABLE IF NOT EXISTS `root_entries` (                     " +
 												 " `Id` BIGINT NOT NULL AUTO_INCREMENT,                           " +
 												 " `Path` VARCHAR(1024),                                          " +
 												 " `FileDataId` INT UNSIGNED,                                     " +
