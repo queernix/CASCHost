@@ -25,17 +25,17 @@ namespace CASCHost
 
 		public string[] DirectoryHash { get; set; } // hashes of directories for offline change detection
 
-		public string WebRootDir {get; set;} = "wwwroot"; //where the content goes
+		public string WebRootDir {get; set;} //where the content goes
 
-		public string MySQLHost { get; set; } = "localhost";
+		public string MySQLHost { get; set; } 
 
-		public string MySQLUid { get; set; } = "caschost";
+		public string MySQLUid { get; set; }  
 
 		public string MySQLPassword { get; set; }
 
-		public string MySQLDatabase { get; set; } = "caschost";
+		public string MySQLDatabase { get; set; }
 
-		public ushort MySQLPort { get; set; } = 3306;
+		public ushort MySQLPort { get; set; } 
 
 		public void Save(IHostingEnvironment env)
 		{
