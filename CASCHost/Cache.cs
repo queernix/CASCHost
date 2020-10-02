@@ -34,7 +34,7 @@ namespace CASCHost
 
 		private MySqlConnectionStringBuilder mysqlstring;
 		
-		private MySqlConnection mysqlcon;
+		//private MySqlConnection mysqlcon;
 
 		public Cache(IHostingEnvironment environment)
 		{

@@ -10,6 +10,7 @@ namespace CASCExtractor
 
         static void Main(string[] args)
         {
+            Console.WriteLine("BASEPATH: " + BASEPATH);
             if (!File.Exists(Path.Combine(BASEPATH, ".build.info")))
             {
                 Console.WriteLine("Error: Missing .build.info.");
